@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include './includes/dp.php';
+include './includes/dp.php'; // Make sure the path is correct
 
 $result = $conn->query("SELECT * FROM tasks");
 ?>
@@ -21,6 +21,7 @@ $result = $conn->query("SELECT * FROM tasks");
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <section class="card">
     <div class="container mt-5">
         <h1 class="mb-4">My To-Do List</h1>
         <div class="form-row mb-3">
@@ -35,8 +36,24 @@ $result = $conn->query("SELECT * FROM tasks");
             </div>
         </div>
         <button class="btn btn-success mb-3" onclick="addTask()">Add Task</button>
-        <ul id="taskList" class="list-group"></ul>
+        <ul id="taskList" class="list-group">
+            <?php
+                // Display tasks fetched from the database
+                while ($row = $result->fetch_assoc()) {
+                    echo '<li class="list-group-item">';
+                    echo '<strong>' . $row['task_name'] . '</strong><br>';
+                    if ($row['due_date']) {
+                        echo 'Due date: ' . $row['due_date'] . '<br>';
+                    }
+                    if ($row['due_time']) {
+                        echo 'Due time: ' . $row['due_time'] . '<br>';
+                    }
+                    echo '<button class="btn btn-danger" onclick="removeTask(this, ' . $row['id'] . ')">Remove</button></li>';
+                }
+            ?>
+        </ul>
     </div>
+    </section>
 
   <!-- footer session  -->
   <footer style="background-color: rgb(255, 255, 255);" class="text-white text-center py-4">

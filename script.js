@@ -63,3 +63,49 @@ function loadTasks() {
     xhr.send();
 }
 
+
+function removeTask(button, taskId) {
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "removeTask.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            loadTasks();
+        }
+    };
+    xhr.send("id=" + encodeURIComponent(taskId));
+}
+
+
+function loadTasks() {
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "getTasks.php", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById("taskList").innerHTML = xhr.responseText;
+            updateRemoveButtonListeners();
+        }
+    };
+    xhr.send();
+}
+
+
+function updateRemoveButtonListeners() {
+    var removeButtons = document.querySelectorAll('.list-group-item button');
+    removeButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var taskId = this.getAttribute('data-task-id');
+            removeTask(this, taskId);
+        });
+    });
+}
+
+
+window.onload = function () {
+    loadTasks();
+    updateRemoveButtonListeners();
+};
+
+

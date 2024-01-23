@@ -1,11 +1,11 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f8f8;
+    background-color: #fff;
     margin: 0;
 }
 
-.container {
-    max-width: 600px;
+.card {
+    width: 600px;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
